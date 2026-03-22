@@ -251,6 +251,16 @@ cmd_install() {
     require_cmd git
     check_go_version
 
+    # Prompt for port configuration
+    local default_port="$PB_PORT"
+    read -rp "Enter PocketBase port [${default_port}]: " input_port
+    PB_PORT="${input_port:-$default_port}"
+
+    # Save config with chosen port
+    mkdir -p "$PB_HOME" "$PB_LOG_DIR" "$PB_DATA_DIR" "$PB_BACKUP_DIR"
+    save_config
+    log_info "Port set to $PB_PORT (saved to $PB_CONF)"
+
     mkdir -p "$PB_BIN_DIR"
 
     # Clone source
